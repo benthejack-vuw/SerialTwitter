@@ -1,17 +1,18 @@
 require 'serialport'
 require 'twitter'
 
-class SerialTwitter
+class SerialTwitters
+	
+	#you need to fill in the following values
+	@client = Twitter::REST::Client.new do |config|
+		config.consumer_key        = "..."
+		config.consumer_secret     = "..."
+		config.access_token        = "..."
+		config.access_token_secret = "..."
+	end
 
 	def initialize
 		@serial = false
-		@client = Twitter::REST::Client.new do |config|
-		  config.consumer_key        = "4q2s46X0OGlxTfxV0XhzsF8Fc"
-		  config.consumer_secret     = "8LBoCYQNJ5rXqj9zXGSNT18tUZXvi1uqcbV0NdFw3vvfCa3uJF"
-		  config.access_token        = "47606826-1iSZHkVFMnL9xtcV7Hs3XgRo0tfF1Uj3tT4xtZpnx"
-		  config.access_token_secret = "oslNQVT3F4ZBDiu4N5ZudZi6IgTIrxYB4jJU3P8tvQYlu"
-		end
-
 		@discard = ["/dev/tty.Bluetooth-Incoming-Port",
 					      "/dev/cu.Bluetooth-Incoming-Port" ]
 	end
