@@ -1,4 +1,4 @@
-#include <serialTwitter.h>
+#include <SerialTwitter.h>
 
 //pin for twitter to let you know it's current status
 int twitter_status_pin = 2;

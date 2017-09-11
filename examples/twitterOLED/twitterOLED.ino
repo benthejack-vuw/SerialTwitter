@@ -1,7 +1,7 @@
 #include <SPI.h>
 #include <SSD1306AsciiSpi.h>
 
-#include <serialTwitter.h>
+#include <SerialTwitter.h>
 
 //this assumes hardware SPI
 //sck -> pin 13
