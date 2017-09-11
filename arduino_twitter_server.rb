@@ -16,8 +16,7 @@ class SerialTwitter
 					      "/dev/cu.Bluetooth-Incoming-Port" ]
 	end
 
-	def connect baudrate
-		baud_rate = baudrate
+	def connect baud_rate
 		data_bits = 8
 		stop_bits = 1
 		parity = SerialPort::NONE
@@ -26,15 +25,15 @@ class SerialTwitter
 			handshake = 0
 			ports = Dir.glob("/dev/{tty,cu}.*") - @discard
 			ports.each do |p|
-				puts p
+				puts "trying to connect to:#{p}"
 				serial = SerialPort.new(p, baud_rate, data_bits, stop_bits, parity)
 				sleep 3
 
 				while(!serial.eof && !@serial) do
 					handshake = serial.readline.chomp
 					if handshake == "arduino"
-						@serial = serial #ASCII 'C'
-						@serial.write "arduinoServer\n"
+						@serial = serial
+						@serial.write "arduinoServer"
 						puts "CONNECTED TO ARDUINO"
 					end
 				end
@@ -42,39 +41,43 @@ class SerialTwitter
 				break if(@serial)
 			end
 		end
+	end
 
+	def println args
+		puts "#{args[0]}"
+	end
+
+	def log args
+		print args[0].chomp
 	end
 
 	def update
 		command = @serial.readline
-		puts "command - #{command}"
-
-		args = command.split(":")
+		args = command.split("|~|")
 		message = args.shift()
-
 		self.send message, args
 	end
 
 	def tweets_with args
+		puts "searching for tweets with: #{args[0]}"
 	  numTweets = @client.search(args[0], result_type: "recent").count
-		puts numTweets
+		puts "number of tweets found with #{args[0]}: #{numTweets}"
 		@serial.write(numTweets)
 	end
 
 	def number_of_likes username
-
 	end
 
 	def number_of_retweets username
-
 	end
 
 	def number_of_friends username
-
 	end
 
-	def post_tweet text
-
+	def post_tweet args
+		text = args[0].chomp
+		puts "tweeting: #{text}"
+		@client.update(text);
 	end
 
 	def send_to_arduino value
