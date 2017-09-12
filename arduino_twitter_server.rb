@@ -1,7 +1,7 @@
 require 'serialport'
 require 'twitter'
 
-class SerialTwitters
+class SerialTwitter
 	
 	#you need to fill in the following values
 	@client = Twitter::REST::Client.new do |config|
