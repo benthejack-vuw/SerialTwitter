@@ -3,18 +3,21 @@ require 'twitter'
 
 class SerialTwitter
 	
-	#you need to fill in the following values
-	@client = Twitter::REST::Client.new do |config|
-		config.consumer_key        = "..."
-		config.consumer_secret     = "..."
-		config.access_token        = "..."
-		config.access_token_secret = "..."
-	end
+
 
 	def initialize
 		@serial = false
+
+		#you need to fill in the following values
+		@client = Twitter::REST::Client.new do |config|
+			config.consumer_key        = "..."
+			config.consumer_secret     = "..."
+			config.access_token        = "..."
+			config.access_token_secret = "..."
+		end
+
 		@discard = ["/dev/tty.Bluetooth-Incoming-Port",
-					      "/dev/cu.Bluetooth-Incoming-Port" ]
+					"/dev/cu.Bluetooth-Incoming-Port" ]
 	end
 
 	def connect baud_rate
@@ -35,6 +38,7 @@ class SerialTwitter
 					if handshake == "arduino"
 						@serial = serial
 						@serial.write "arduinoServer"
+						@serial.flush_input
 						puts "CONNECTED TO ARDUINO"
 					end
 				end
@@ -61,7 +65,7 @@ class SerialTwitter
 
 	def tweets_with args
 		puts "searching for tweets with: #{args[0]}"
-	  numTweets = @client.search(args[0], result_type: "recent").count
+	    numTweets = @client.search(args[0], result_type: "recent").count
 		puts "number of tweets found with #{args[0]}: #{numTweets}"
 		@serial.write(numTweets)
 	end
