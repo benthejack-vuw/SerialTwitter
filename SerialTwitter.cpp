@@ -1,52 +1,37 @@
 #include "serialTwitter.h"
 
 SerialTwitter::SerialTwitter(int statusPin){
-    _statusPin = statusPin;
-    pinMode(_statusPin, OUTPUT);
+    _owl.statusPin(statusPin);
 }
 
 void SerialTwitter::connect(){
-  owl.connect(9600);
+  _owl.connect(9600);
 }
 
 
 void SerialTwitter::print(String text){
-  owl.sendCommand("log", text);
+  _owl.sendCommand("log", text);
 }
 
 void SerialTwitter::println(String text){
-  owl.sendCommand("println", text);
+  _owl.sendCommand("println", text);
 }
 
 void SerialTwitter::tweet(String text){
-  owl.sendCommand("post_tweet", text);
+  _owl.sendCommand("post_tweet", text);
 }
 
-int SerialTwitter::tweets_with(String text){
-  owl.sendCommand("tweets_with", text);
-  String reply = wait_for_reply();
-  return reply.toInt();
+int SerialTwitter::tweetsWith(String text){
+  _owl.sendCommand("tweets_with", text);
+
+  OWLCommand reply = _owl.awaitReply();
+  return reply.data.toInt();
 }
 
-String SerialTwitter::wait_for_reply(){
-  bool toggle = false;
+void SerialTwitter::watchForTweetsWith(String text){
+  _owl.sendCommand("watch_for_tweets_with", text);
+}
 
-  while(!Serial.available()){
-    if(_statusPin >= 0){
-        digitalWrite(_statusPin, toggle);
-        toggle = !toggle;
-    }
-    delay(200);
-  }
-
-  if(_statusPin >= 0){
-    digitalWrite(_statusPin, LOW);
-  }
-
-  String reply;
-  while(Serial.available()){
-      reply = Serial.readStringUntil("\n");
-  }
-
-  return reply;
+OWLCommand SerialTwitter::pollForWatchedTweets(){
+  return _owl.pollSerial();
 }
