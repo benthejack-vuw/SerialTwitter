@@ -22,11 +22,18 @@ class SerialTwitter
 		print args[0].chomp
 	end
 
-	def tweets_with args
-		puts "searching for tweets with: #{args[0]}"
+	def number_of_tweets_with args
+		puts "searching for number of tweets with: #{args[0]}"
 	    numTweets = @rest_client.search(args[0], result_type: "recent").count
 		puts "number of tweets found with #{args[0]}: #{numTweets}"
-		@owl.write "tweets_with", numTweets
+		@owl.write "number_of_tweets_with", numTweets
+	end
+
+	def latest_tweet_with args
+		puts "searching for tweet with: #{args[0]}"
+			tweet = @rest_client.search(args[0], result_type: "recent").last
+		puts "latest tweet with #{args[0]}: #{tweet.text}"
+		@owl.write "latest_tweet_with", tweet.text
 	end
 
 	def watch_for_tweets_with args
