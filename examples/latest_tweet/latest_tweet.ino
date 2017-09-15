@@ -7,14 +7,14 @@ SerialTwitter twitter(twitter_status_pin);
 
 void setup() {
  twitter.connect();
-
+ 
  //because "hi" is so common this will take a long time.
- //if you plug an LED into the twitter_status_pin it will
+ //if you plug an LED into the twitter_status_pin it will 
  //flash while it's waiting for the reply
- String tweet = twitter.latestTweetWith("hi").data;
-
+ String tweet = twitter.latestTweetWith("hi");
+ 
  twitter.print("arduino heard: ");
- twitter.println(data);
+ twitter.println(tweet);
 }
 
 void loop() {
