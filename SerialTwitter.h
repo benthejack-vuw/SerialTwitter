@@ -9,6 +9,7 @@ class SerialTwitter{
     void println(String text);
     int  tweetsWith(String text);
     void watchForTweetsWith(String text);
+    String latestTweetWith(String text);
     OWLCommand pollForWatchedTweets();
     void tweet(String text);
   private:

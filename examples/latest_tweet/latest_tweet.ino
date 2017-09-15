@@ -11,15 +11,10 @@ void setup() {
  //because "hi" is so common this will take a long time.
  //if you plug an LED into the twitter_status_pin it will
  //flash while it's waiting for the reply
- int count = twitter.numberOfTweetsWith("hi");
-
- //If you want to print out from the arduino for debugging DON'T use Serial.println() or Serial.print()
- //instead use twitter.println() and twitter.print()
- //instead of looking at the arduino serial monitor (which will refuse to open)
- //look at the server script window
+ String tweet = twitter.latestTweetWith("hi").data;
 
  twitter.print("arduino heard: ");
- twitter.println(String(count));
+ twitter.println(data);
 }
 
 void loop() {

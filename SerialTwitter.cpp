@@ -21,12 +21,19 @@ void SerialTwitter::tweet(String text){
   _owl.sendCommand("post_tweet", text);
 }
 
-int SerialTwitter::tweetsWith(String text){
-  _owl.sendCommand("tweets_with", text);
+int SerialTwitter::numberOfTweetsWith(String text){
+  _owl.sendCommand("number_of_tweets_with", text);
 
   OWLCommand reply = _owl.awaitReply();
   return reply.data.toInt();
 }
+
+String SerialTwitter::latestTweetWith(String text){
+  _owl.sendCommand("latest_tweet_with", text);
+  OWLCommand reply = _owl.awaitReply();
+  return reply.data;
+}
+
 
 void SerialTwitter::watchForTweetsWith(String text){
   _owl.sendCommand("watch_for_tweets_with", text);

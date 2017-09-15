@@ -7,16 +7,17 @@ int button_pin = 3;
 SerialTwitter twitter(twitter_status_pin);
 
 void setup() {
+ pinMode(button_pin, INPUT);
  twitter.connect();
 }
 
 void loop() {
 
   int button = digitalRead(button_pin);
-  
+
   if(button == HIGH){
     twitter.tweet("I PRESSED A BUTTON! #arduino");
-    delay(2000); 
+    delay(2000);
   }
-  
+
 }
